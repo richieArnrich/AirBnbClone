@@ -18,5 +18,5 @@ const registerUser = async (req, res) => {
   const newUser = await userModel.create(User);
   res.json(newUser);
 };
-
-module.exports = { registerUser };
+const loginUser = () => {};
+module.exports = { registerUser, loginUser };
