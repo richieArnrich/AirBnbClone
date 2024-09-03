@@ -20,6 +20,7 @@ function RegisterPage() {
     console.log(user);
     axios.post("/users/register", user).then((res) => {
       console.log(res.data);
+      
     });
     event.preventDefault();
   };

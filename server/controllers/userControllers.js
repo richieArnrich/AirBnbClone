@@ -16,7 +16,11 @@ const registerUser = async (req, res) => {
     confirmPassword: bcrypt.hashSync(confirmPassword, bcryptSalt),
   };
   const newUser = await userModel.create(User);
-  res.json(newUser);
+  res.json({
+    user: newUser,
+    status: 200,
+    message: "User Registration Sucessful",
+  });
 };
 const loginUser = () => {};
 module.exports = { registerUser, loginUser };
