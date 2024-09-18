@@ -18,10 +18,16 @@ function RegisterPage() {
       confirmPassword,
     };
     console.log(user);
-    axios.post("/users/register", user).then((res) => {
-      console.log(res.data);
-      
-    });
+    axios
+      .post("/users/register", user)
+      .then((res) => {
+        console.log(res.data);
+        alert("User registration successfull");
+      })
+      .catch((err) => {
+        alert("Registration failed");
+        console.log(err);
+      });
     event.preventDefault();
   };
   return (
@@ -74,7 +80,7 @@ function RegisterPage() {
           <button className="primary">Register</button>
           <div className="text-center py-2 text-gray-500">
             Have an account?{" "}
-            <Link to="/register" className="underline text-black">
+            <Link to="/login" className="underline text-black">
               Login
             </Link>
           </div>

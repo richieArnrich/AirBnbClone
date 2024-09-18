@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const users = require("./routes/userRoutes");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const connect = async () => {
   try {
@@ -19,6 +20,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(cookieParser());
 
 app.get("/test", (req, res) => {
   res.json("test ok");
