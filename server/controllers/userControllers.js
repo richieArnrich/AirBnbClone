@@ -40,7 +40,6 @@ const loginUser = async (req, res) => {
         {
           email: userData.email,
           id: userData._id,
-          userName: userData.firstName,
         },
         jwtSecret,
         {},
@@ -64,9 +63,10 @@ const userProfile = (req, res) => {
   const { token } = req.cookies;
   console.log("cookies: ", req.cookies);
   if (token) {
-    jwt.verify(token, jwtSecret, {}, (err, user) => {
+    jwt.verify(token, jwtSecret, {}, async (err, user) => {
       if (err) throw err;
-      res.json(user);
+      const userDoc = await userModel.findById(user.id);
+      res.json(userDoc);
     });
   } else {
     res.json({ status: 401, message: "Unauthorized" });

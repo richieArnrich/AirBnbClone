@@ -5,6 +5,7 @@ export const UserContext = createContext();
 
 export function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [ready, setReady] = useState(false);
   useEffect(() => {
     if (!user) {
       axios
@@ -13,6 +14,7 @@ export function UserContextProvider({ children }) {
         })
         .then((res) => {
           setUser(res.data);
+          setReady(true);
         })
         .catch((err) => {
           console.log(err);
@@ -21,7 +23,7 @@ export function UserContextProvider({ children }) {
     }
   }, []);
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, ready }}>
       {children}
     </UserContext.Provider>
   );
