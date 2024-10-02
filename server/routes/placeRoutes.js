@@ -1,6 +1,7 @@
 const express = require("express");
 const place = require("../controllers/placeControllers");
 const multer = require("multer");
+
 const router = express.Router();
 
 router.post("/upload-by-link", place.uploadByLink);
@@ -12,4 +13,5 @@ router.post(
   place.uploadPhoto
 );
 
+router.post("/addplaces", place.addPlace);
 module.exports = router;
