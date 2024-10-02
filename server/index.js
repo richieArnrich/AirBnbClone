@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const users = require("./routes/userRoutes");
+const places = require("./routes/placeRoutes");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
@@ -26,6 +27,8 @@ app.get("/test", (req, res) => {
   res.json("test ok");
 });
 app.use("/users", users);
+app.use("/places", places);
+app.use("/uploads", express.static(__dirname + "/controllers/uploads"));
 app.listen(4000, () => {
   connect();
   console.log("app running on " + "http://localhost:4000");

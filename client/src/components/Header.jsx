@@ -4,7 +4,7 @@ import { UserContext } from "../UserContext";
 
 function Header() {
   const { user } = useContext(UserContext);
-  console.log(user);
+  console.log("user", user);
   return (
     <div>
       <header className="flex justify-between">

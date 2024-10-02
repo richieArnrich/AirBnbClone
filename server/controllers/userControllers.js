@@ -1,5 +1,5 @@
 const userModel = require("../models/userSchema.js");
-console.log(userModel);
+// console.log(userModel);
 const bcrypt = require("bcryptjs");
 
 const jwt = require("jsonwebtoken");
@@ -69,7 +69,11 @@ const userProfile = (req, res) => {
       res.json(userDoc);
     });
   } else {
-    res.json({ status: 401, message: "Unauthorized" });
+    res.json(null);
   }
+};
+
+userLogOut = (req, res) => {
+  res.cookie("token", "").json(true);
 };
 module.exports = { registerUser, loginUser, userProfile };
