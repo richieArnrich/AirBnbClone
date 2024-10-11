@@ -35,14 +35,11 @@ const uploadPhoto = (req, res) => {
 
 const addPlace = (req, res) => {
   const { token } = req.cookies;
-
   // Check if the token exists before proceeding
   if (!token) {
     return res.status(401).json({ error: "JWT must be provided" });
   }
-
   console.log(token);
-
   const {
     name,
     address,
@@ -62,6 +59,7 @@ const addPlace = (req, res) => {
     }
 
     try {
+      console.log(user);
       // Create the new place with the provided data
       const placeDoc = await Place.create({
         owner: user.id,
@@ -82,4 +80,27 @@ const addPlace = (req, res) => {
     }
   });
 };
-module.exports = { uploadByLink, uploadPhoto, addPlace };
+
+const getPlaces = (req, res) => {
+  const { token } = req.cookies;
+  console.log(req.cookies);
+  jwt.verify(token, jwtSecret, {}, async (err, user) => {
+    const { id } = user;
+    console.log(user);
+    res.json(await Place.find({ owner: id }));
+    if (err) {
+      return res.status(403).json({ error: "Invalid JWT" });
+    }
+  });
+};
+
+const getSinglePlace = async (req, res) => {
+  res.json(await Place.findById(req.params.id));
+};
+module.exports = {
+  uploadByLink,
+  uploadPhoto,
+  addPlace,
+  getPlaces,
+  getSinglePlace,
+};

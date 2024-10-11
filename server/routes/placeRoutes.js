@@ -1,6 +1,7 @@
 const express = require("express");
 const place = require("../controllers/placeControllers");
 const multer = require("multer");
+const PlaceModel = require("../models/Place");
 
 const router = express.Router();
 
@@ -14,4 +15,8 @@ router.post(
 );
 
 router.post("/addplaces", place.addPlace);
+
+router.get("/", place.getPlaces);
+router.get("/:id", place.getSinglePlace);
+
 module.exports = router;

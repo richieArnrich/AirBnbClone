@@ -6,6 +6,7 @@ const places = require("./routes/placeRoutes");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
+app.use(cookieParser());
 const connect = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URL);
@@ -21,7 +22,6 @@ app.use(
   })
 );
 app.use(express.json());
-app.use(cookieParser());
 
 app.get("/test", (req, res) => {
   res.json("test ok");

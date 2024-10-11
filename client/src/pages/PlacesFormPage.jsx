@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PhotosUploader from "../components/PhotosUploader";
 import Perks from "../components/Perks";
+import AccountNav from "../components/AccountNav";
+import { Navigate, useParams } from "react-router-dom";
+import axios from "axios";
 function PlacesFormPage() {
+  const { id } = useParams();
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
   const [addedPhotos, setAddedPhotos] = useState([]);
@@ -11,6 +15,21 @@ function PlacesFormPage() {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [maxGuests, setMaxGuests] = useState(0);
+  const [redirect, setRedirect] = useState(false);
+  useEffect(() => {
+    if (!id) {
+      return;
+    } else {
+      axios
+        .get("/places/" + id, { withCredentials: true })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [id]);
   function inputHeader(header) {
     return <h2 className="text-2xl mt-4">{header}</h2>;
   }
@@ -43,11 +62,20 @@ function PlacesFormPage() {
       .post("places/addplaces", data, { withCredentials: true })
       .then((res) => {
         console.log(res.data);
-        setRedirect("/account/places");
+        setRedirect(true);
+        alert("Place added successfully");
+      })
+      .catch((err) => {
+        alert("something went wrong");
+        console.log(err);
       });
+  }
+  if (redirect) {
+    return <Navigate to={"/account/places"} />;
   }
   return (
     <div>
+      <AccountNav />
       <form onSubmit={addNewPlace}>
         {/* Title input field */}
         {preInput("Title", "A chatchy title for your place")}
