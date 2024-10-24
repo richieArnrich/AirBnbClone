@@ -122,7 +122,7 @@ function PlacePage() {
         </div>
         <button
           onClick={() => setAllPhotos(true)}
-          className="flex gap-1 absolute bottom-2 right-2 px-4 bg-white rounded-2xl shadow shadow-md shadow-gray-500"
+          className="flex gap-1 absolute bottom-2 right-2 px-4 bg-white rounded-2xl shadow-md shadow-gray-500"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
