@@ -15,15 +15,26 @@ function PlacesFormPage() {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [maxGuests, setMaxGuests] = useState(0);
+  const [price, setPrice] = useState(1500);
   const [redirect, setRedirect] = useState(false);
   useEffect(() => {
     if (!id) {
       return;
     } else {
       axios
-        .get("/places/" + id, { withCredentials: true })
-        .then((res) => {
-          console.log(res.data);
+        .get("/places/place/" + id, { withCredentials: true })
+        .then(({ data }) => {
+          console.log(data);
+          setTitle(data.name);
+          setAddress(data.address);
+          setAddedPhotos(data.photos);
+          setDescription(data.description);
+          setPerks(data.perks);
+          setExtraInfo(data.extraInfo);
+          setCheckIn(data.checkIn);
+          setCheckOut(data.checkOut);
+          setMaxGuests(data.maxGuest);
+          setPrice(data.price);
         })
         .catch((err) => {
           console.log(err);
@@ -45,9 +56,10 @@ function PlacesFormPage() {
     );
   }
 
-  function addNewPlace(event) {
+  function savePlace(event) {
     event.preventDefault();
     const data = {
+      id: id,
       name: title,
       address,
       photos: addedPhotos,
@@ -57,18 +69,35 @@ function PlacesFormPage() {
       checkIn,
       checkOut,
       maxGuest: maxGuests,
+      price,
     };
-    axios
-      .post("places/addplaces", data, { withCredentials: true })
-      .then((res) => {
-        console.log(res.data);
-        setRedirect(true);
-        alert("Place added successfully");
-      })
-      .catch((err) => {
-        alert("something went wrong");
-        console.log(err);
-      });
+    if (id) {
+      //update the place
+      axios
+        .put("places/updateplace/", data, { withCredentials: true })
+        .then((res) => {
+          console.log(res.data);
+          setRedirect(true);
+          alert("Place updated successfully");
+        })
+        .catch((err) => {
+          alert("something went wrong");
+          console.log(err);
+        });
+    } else {
+      //create a new place
+      axios
+        .post("places/addplaces", data, { withCredentials: true })
+        .then((res) => {
+          console.log(res.data);
+          setRedirect(true);
+          alert("Place added successfully");
+        })
+        .catch((err) => {
+          alert("something went wrong");
+          console.log(err);
+        });
+    }
   }
   if (redirect) {
     return <Navigate to={"/account/places"} />;
@@ -76,7 +105,7 @@ function PlacesFormPage() {
   return (
     <div>
       <AccountNav />
-      <form onSubmit={addNewPlace}>
+      <form onSubmit={savePlace}>
         {/* Title input field */}
         {preInput("Title", "A chatchy title for your place")}
         <input
@@ -118,7 +147,7 @@ function PlacesFormPage() {
           "Check In&Out times",
           "Add Check in and out times, remember to have some time window for cleaning the bedroom between guests"
         )}
-        <div className="grid gap-2 sm:grid-cols-3">
+        <div className="grid gap-2 grid-cols-2 md:grid-cols-4">
           <div>
             <h3 className="mt-2 -mb-2">Check in time</h3>
             <input
@@ -144,6 +173,15 @@ function PlacesFormPage() {
               placeholder="Max guests"
               value={maxGuests}
               onChange={(ev) => setMaxGuests(ev.target.value)}
+            />
+          </div>
+          <div>
+            <h3 className="mt-2 -mb-2">Price Per Night</h3>
+            <input
+              type="text"
+              placeholder="Price"
+              value={price}
+              onChange={(ev) => setPrice(ev.target.value)}
             />
           </div>
         </div>

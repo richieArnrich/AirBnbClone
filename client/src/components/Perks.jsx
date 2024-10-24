@@ -35,7 +35,12 @@ function Perks({ selected, onChange }) {
     <>
       {/* Perk 1: WiFi */}
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <input type="checkbox" name="wifi" onChange={handleCbClick} />
+        <input
+          type="checkbox"
+          checked={selected.includes("wifi")}
+          name="wifi"
+          onChange={handleCbClick}
+        />
         {/* WiFi icon SVG path */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +60,13 @@ function Perks({ selected, onChange }) {
         {/* Perk 2: Free Parking */}
       </label>
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <input type="checkbox" name="parking" onChange={handleCbClick} />
+        <input
+          type="checkbox"
+          checked={selected.includes("parking")}
+          name="parking"
+          onChange={handleCbClick}
+        />
+        {console.log(selected)}
         {/* Free Parking icon SVG path */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +86,12 @@ function Perks({ selected, onChange }) {
       </label>
       {/* Perk 3: TV */}
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <input type="checkbox" name="TV" onChange={handleCbClick} />
+        <input
+          type="checkbox"
+          checked={selected.includes("TV")}
+          name="TV"
+          onChange={handleCbClick}
+        />
         {/* TV icon SVG path */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -95,7 +111,12 @@ function Perks({ selected, onChange }) {
       </label>
       {/* Perk 4: Radio */}
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <input type="checkbox" name="radio" onChange={handleCbClick} />
+        <input
+          type="checkbox"
+          checked={selected.includes("radio")}
+          name="radio"
+          onChange={handleCbClick}
+        />
         {/* Radio icon SVG path */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -115,7 +136,12 @@ function Perks({ selected, onChange }) {
       </label>
       {/* Perk 5: Pets */}
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-        <input type="checkbox" name="pets" onChange={handleCbClick} />
+        <input
+          type="checkbox"
+          checked={selected.includes("pets")}
+          name="pets"
+          onChange={handleCbClick}
+        />
         {/* Pets icon SVG path */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -137,6 +163,7 @@ function Perks({ selected, onChange }) {
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
         <input
           type="checkbox"
+          checked={selected.includes("Private Entrance")}
           name="Private Entrance"
           onChange={handleCbClick}
         />

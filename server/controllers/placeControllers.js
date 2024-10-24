@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "fasefraw4r5r3wq45wdfgw34twdfg";
 
+// controller to upload picture using link
 const uploadByLink = async (req, res) => {
   const { link } = req.body;
   const newName = "photo" + Date.now() + ".jpg";
@@ -18,6 +19,7 @@ const uploadByLink = async (req, res) => {
   res.json(newName);
 };
 
+// controller to upload photo using button
 const uploadPhoto = (req, res) => {
   console.log(req.files);
   const uploadedFiles = [];
@@ -33,6 +35,7 @@ const uploadPhoto = (req, res) => {
   res.json(uploadedFiles);
 };
 
+// controller to add a new place
 const addPlace = (req, res) => {
   const { token } = req.cookies;
   // Check if the token exists before proceeding
@@ -50,6 +53,7 @@ const addPlace = (req, res) => {
     checkIn,
     checkOut,
     maxGuest,
+    price,
   } = req.body;
   console.log(req.body);
   // Verify the token
@@ -72,6 +76,7 @@ const addPlace = (req, res) => {
         checkIn,
         checkOut,
         maxGuest,
+        price,
       });
       res.json(placeDoc);
     } catch (error) {
@@ -81,6 +86,7 @@ const addPlace = (req, res) => {
   });
 };
 
+// controller to get all places for a specific user
 const getPlaces = (req, res) => {
   const { token } = req.cookies;
   console.log(req.cookies);
@@ -94,8 +100,57 @@ const getPlaces = (req, res) => {
   });
 };
 
+// controller to get single place for a specific user
 const getSinglePlace = async (req, res) => {
-  res.json(await Place.findById(req.params.id));
+  const { id } = req.params;
+  console.log("get single place");
+  res.json(await Place.findById(id));
+};
+
+// controller to update a place
+const updatePlace = async (req, res) => {
+  const { token } = req.cookies;
+  const {
+    id,
+    name,
+    address,
+    photos,
+    description,
+    perks,
+    extraInfo,
+    checkIn,
+    checkOut,
+    maxGuest,
+    price,
+  } = req.body;
+
+  jwt.verify(token, jwtSecret, {}, async (err, user) => {
+    const placeDoc = await Place.findById(id);
+    console.log(placeDoc);
+    if (user.id === placeDoc.owner.toString()) {
+      console.log(user.id);
+      console.log(placeDoc.owner.toString());
+      placeDoc.set({
+        name,
+        address,
+        photos,
+        description,
+        perks,
+        extraInfo,
+        checkIn,
+        checkOut,
+        maxGuest,
+        price,
+      });
+      await placeDoc.save();
+      res.json("ok");
+    }
+  });
+};
+
+const getAllPlaces = async (req, res) => {
+  const allPlaces = await Place.find();
+  res.json(allPlaces);
 };
 module.exports = {
   uploadByLink,
@@ -103,4 +158,6 @@ module.exports = {
   addPlace,
   getPlaces,
   getSinglePlace,
+  updatePlace,
+  getAllPlaces,
 };

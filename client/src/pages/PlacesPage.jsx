@@ -9,26 +9,18 @@ function PlacesPage() {
   const [places, setPlaces] = useState([]);
   useEffect(() => {
     axios
-      .get("/places/", { withCredentials: true })
+      .get("/places/place", { withCredentials: true })
       .then(({ data }) => {
         setPlaces(data);
-        document.getElementById("message").innerHTML =
-          "<b>Fetched Successfully</b>";
       })
       .catch((err) => {
         console.log(err);
-        document.getElementById("message").innerHTML =
-          "<b>Something went wrong while fetching</b>";
+        alert("something went wrong");
       });
-    console.log(document.getElementById("message"));
   }, []);
   return (
     <div>
       <AccountNav />
-      <p
-        id="message"
-        className="text-center p-5 bg-slate-400 w-40 mx-auto rounded-md my-4"
-      ></p>
       <div className="text-center gap-2 my-3">
         <Link
           className="inline-flex gap-1 bg-primary text-white py-2 px-6 rounded-full"
@@ -58,12 +50,21 @@ function PlacesPage() {
                 key={place.id}
                 className="flex cursor-pointer gap-4 bg-gray-200 p-4 rounder-2xl"
               >
-                <div className="w-32 h-32 bg-primary grow shrink-0">
-                  {place.photos.length > 0 && <img src={place.photos[0]} />}
+                <div className="flex w-32 h-32 bg-primary shrink-0">
+                  {place.photos.length > 0 && (
+                    <img
+                      className="object-cover"
+                      src={"http://localhost:4000/uploads/" + place.photos[0]}
+                    />
+                  )}
                 </div>
                 <div className="grow-0 shrink">
                   <h2 className="text-xl ">{place.name}</h2>
                   <p className="text-sm mt-2">{place.description}</p>
+                  <p className="text-sm mt-2">
+                    {"\u20B9"}
+                    {place.price} per night
+                  </p>
                 </div>
               </Link>
             );
