@@ -5,6 +5,7 @@ import axios from "axios";
 
 import PlacesFormPage from "./PlacesFormPage";
 import AccountNav from "../components/AccountNav";
+import PlaceImg from "../components/PlaceImg";
 function PlacesPage() {
   const [places, setPlaces] = useState([]);
   useEffect(() => {
@@ -51,12 +52,7 @@ function PlacesPage() {
                 className="flex cursor-pointer gap-4 bg-gray-200 p-4 rounder-2xl"
               >
                 <div className="flex w-32 h-32 bg-primary shrink-0">
-                  {place.photos.length > 0 && (
-                    <img
-                      className="object-cover"
-                      src={"http://localhost:4000/uploads/" + place.photos[0]}
-                    />
-                  )}
+                  <PlaceImg place={place} />
                 </div>
                 <div className="grow-0 shrink">
                   <h2 className="text-xl ">{place.name}</h2>

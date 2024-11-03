@@ -4,9 +4,19 @@ const Place = require("../models/Place");
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Booking = require("../models/Booking");
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "fasefraw4r5r3wq45wdfgw34twdfg";
+
+function getUserDataFromReq(req) {
+  return new Promise((res, rej) => {
+    jwt.verify(req.cookies.token, jwtSecret, {}, async (err, user) => {
+      if (err) throw err;
+      res(user);
+    });
+  });
+}
 
 // controller to upload picture using link
 const uploadByLink = async (req, res) => {
@@ -152,6 +162,33 @@ const getAllPlaces = async (req, res) => {
   const allPlaces = await Place.find();
   res.json(allPlaces);
 };
+
+const bookPlace = async (req, res) => {
+  const userData = await getUserDataFromReq(req);
+  const { place, checkIn, checkOut, numberOfGuests, name, mobile } = req.body;
+  Booking.create({
+    place,
+    checkIn,
+    checkOut,
+    numberOfGuests,
+    name,
+    mobile,
+    user: userData.id,
+  })
+    .then((doc) => {
+      res.json(doc);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json(err);
+    });
+};
+
+// controller to get bookings
+const getBookings = async (req, res) => {
+  const userData = await getUserDataFromReq(req);
+  res.json(await Booking.find({ user: userData.id }).populate("place"));
+};
 module.exports = {
   uploadByLink,
   uploadPhoto,
@@ -160,4 +197,6 @@ module.exports = {
   getSinglePlace,
   updatePlace,
   getAllPlaces,
+  bookPlace,
+  getBookings,
 };

@@ -29,4 +29,10 @@ router.put("/updateplace", place.updatePlace);
 // get all places for all users
 router.get("/allplaces", place.getAllPlaces);
 
+// book place route
+router.post("/bookings", place.bookPlace);
+
+// to get bookings
+router.get("/bookings", place.getBookings);
+
 module.exports = router;
